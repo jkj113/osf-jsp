@@ -102,9 +102,9 @@ public class PBoardServlet2 extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else if ("update".equals(uri)) {
-
+			
 		} else if ("delete".equals(uri)) {
-
+			
 		} else {
 
 		}
