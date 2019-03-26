@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
+
+import com.google.gson.Gson;
 
 // 네이버 기계번역 (Papago SMT) API 예제
 public class Transfer {
@@ -22,7 +25,7 @@ public class Transfer {
             con.setRequestProperty("X-Naver-Client-Id", clientId);
             con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
             // post request
-            String postParams = "source=ko&target=en&text=" + text;
+            String postParams = "source=ko&target=ja&text=" + text;
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(postParams);
@@ -42,7 +45,13 @@ public class Transfer {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response.toString());
+            Gson gson = new Gson();
+            Map<String, Map<String, Map<String,String>>> result = gson.fromJson(response.toString(), Map.class);
+//            Map<String,Object> result = gson.fromJson(response.toString(), Map.class);
+//            Map<String,Object> mMap = ( Map<String,Object>)result.get("message");
+//            Map<String,Object> rMap = ( Map<String,Object>)mMap.get("result");
+//            System.out.println(result); //데이터 타입이 StringBuffer라서
+            System.out.println(result.get("message").get("result").get("translatedText"));
         } catch (Exception e) {
             System.out.println(e);
         }
